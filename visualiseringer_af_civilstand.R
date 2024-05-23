@@ -55,7 +55,7 @@ civilstand_2000_2020 <- danmarksstatistik %>%
 
 civilstand_2000_2020 %>% 
   ggplot(aes(x=år,y=count, fill=civilstand))+
-  geom_col(stat = "identity", position="dodge")+
+  geom_bar(stat = "identity", position="dodge")+
   facet_wrap(~Alder, ncol = 3)+
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))+ 
