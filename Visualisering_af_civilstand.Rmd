@@ -1,0 +1,89 @@
+---
+title: "Visualisering_af_civilstand"
+author: "Anne Aslai-Sørensen"
+output: html_document
+date: "2024-05-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Aktivering af tidyverse-pakke
+```{r library}
+library(tidyverse) 
+```
+
+#Indlæsning af csv-fil med datasættet fra 1801 fra Aarhus Stadsarkiv 
+```{r load-data}
+civilstand_1801 <- read_csv ("/Users/anneaslai-sorensen/Documents/Historie AU/2. Semester/Digitale arkiver og metoder/Eksamen/Csv data filer/datasæt_20_til_31_fra_1801.txt")
+```
+#Tjek af datasæt
+```{r inspect}
+head(civilstand_1801)
+```
+#Forhold mellem ugifte og gifte kvinder i 1801
+```{r eval=FALSE}
+civilstand_1801 %>%
+  ggplot(aes(x=civilstand)) +
+  geom_bar(aes(fill=civilstand))
+```
+
+#Ændring af kolonnenavn
+```{r relabel column}
+colnames(civilstand_1801)
+names(civilstand_1801)[names(civilstand_1801)=="ft"]<- "år"
+```
+
+#Civilstand fordelt på alder
+```{r eval=FALSE}
+civilstand_1801 %>% 
+  drop_na(alder) %>% 
+  mutate(alder_str=paste0(alder, " år")) %>% 
+  ggplot(aes(x=civilstand, fill=civilstand))+
+  geom_bar(stat = 'count', position="dodge")+ 
+  facet_wrap(~alder_str, ncol = 3)+ 
+  theme_minimal()+
+  ggtitle("Civilstand fordelt på alder i 1801")
+
+```
+
+#Indlæsning af csv-fil med datasættet fra Danmarks Statistik
+```{r load-data}
+danmarksstatistik <- read_csv2("/Users/anneaslai-sorensen/Documents/Historie AU/2. Semester/Digitale arkiver og metoder/Eksamen/Csv data filer/datasæt_2000_til_2020_3.csv")
+```
+
+#Tjek af datasæt
+```{r inspect}
+head(danmarksstatistik)
+```
+
+#Datasættet laves om fra wide-dataset til long-dataset
+```{r eval=FALSE}
+civilstand_2000_2020 <- danmarksstatistik %>% 
+  pivot_longer(cols=`2000`:`2020`,
+               names_to = "år",
+               values_to = "count")
+```
+
+#Tjek af datasæt
+```{r inspect}
+head(civilstand_2000_2020)
+```
+
+#Civilstand fordelt på alder fra 2000-2020
+```{r eval=FALSE}
+civilstand_2000_2020 %>% 
+  ggplot(aes(x=år,y=count, fill=civilstand))+
+  geom_bar(stat = "identity", position="dodge")+
+  facet_wrap(~Alder, ncol = 3)+
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))+
+  ggtitle("Civilstand fordelt på alder fra 2000 til 2020")
+```
+
+
+
+
+
+
