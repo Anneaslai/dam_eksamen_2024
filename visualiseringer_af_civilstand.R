@@ -17,12 +17,6 @@ civilstand_1801 %>%
 colnames(civilstand_1801)
 names(civilstand_1801)[names(civilstand_1801)=="ft"]<- "år"
 
-
-civilstand_1801 %>% 
-  ggplot(aes(x=alder, y=`år`))+
-  geom_line()
-
-
 #########################
 
 #FORDELT PÅ ALDER 
@@ -42,11 +36,6 @@ civilstand_1801 %>%
 #DATASÆT FRA 2000 TIL 2020 
 
 danmarksstatistik <- read_csv2("/Users/anneaslai-sorensen/Documents/Historie AU/2. Semester/Digitale arkiver og metoder/Eksamen/Csv data filer/datasæt_2000_til_2020_3.csv")
-
-
-danmarksstatistik %>% 
-  ggplot(aes(x=Alder, y=`2000`))+
-  geom_line()
 
 civilstand_2000_2020 <- danmarksstatistik %>% 
   pivot_longer(cols=`2000`:`2020`,
